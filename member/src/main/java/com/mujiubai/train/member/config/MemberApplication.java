@@ -1,4 +1,4 @@
-package com.jiawa.train.member.config;
+package com.mujiubai.train.member.config;
 
 import org.slf4j.Logger;
 
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
 @SpringBootApplication
-@ComponentScan("com.jiawa")
+@ComponentScan("com.mujiubai")
 public class MemberApplication {
 	private static final Logger LOG = LoggerFactory.getLogger(MemberApplication.class);
 	public static void main(String[] args) {

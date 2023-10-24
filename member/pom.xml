@@ -6,12 +6,12 @@
 
 	<parent>
 		<artifactId>train</artifactId>
-		<groupId>com.jiawa</groupId>
+		<groupId>com.mujiubai</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 
-	<groupId>com.jiawa</groupId>
+	<groupId>com.mujiubai</groupId>
 	<artifactId>member</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
