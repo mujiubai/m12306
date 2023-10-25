@@ -1,4 +1,4 @@
-package com.mujiubai.train.member.config;
+package com.mujiubai.train.gateway.config;
 
 import org.slf4j.Logger;
 
@@ -10,14 +10,14 @@ import org.springframework.core.env.Environment;
 
 @SpringBootApplication
 @ComponentScan("com.mujiubai")
-public class MemberApplication {
-	private static final Logger LOG = LoggerFactory.getLogger(MemberApplication.class);
+public class GatewayApplication {
+	private static final Logger LOG = LoggerFactory.getLogger(GatewayApplication.class);
 	public static void main(String[] args) {
 		// SpringApplication.run(MemberApplication.class, args);
-		SpringApplication app= new SpringApplication(MemberApplication.class);
+		SpringApplication app= new SpringApplication(GatewayApplication.class);
 		Environment env = app.run(args).getEnvironment();
 		LOG.info("启动成功！");
-		LOG.info("地址: http://127.0.0.1:{}{}/hello",env.getProperty("server.port"),env.getProperty("server.servlet.context-path"));
+		LOG.info("网关地址: http://127.0.0.1:{}",env.getProperty("server.port"));
 	}
 
 }

@@ -16,6 +16,8 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>member</module>
+		<module>common</module>
+		<module>gateway</module>
 	</modules>
 
 	<name>train</name>
@@ -45,6 +47,13 @@
 				<groupId>cn.hutool</groupId>
 				<artifactId>hutool-all</artifactId>
 				<version>5.6.3</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.mujiubai</groupId>
+				<artifactId>common</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<type>pom</type> <!-- vscode中引用自定义pom需要加该行 -->				
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
