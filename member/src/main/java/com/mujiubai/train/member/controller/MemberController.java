@@ -12,6 +12,7 @@ import com.mujiubai.train.common.resp.CommonResp;
 
 
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/member")
@@ -35,7 +36,7 @@ public class MemberController {
     }
 
     @PostMapping("/register")
-    public CommonResp<Long> register(MemberRegisterReq req){
+    public CommonResp<Long> register(@Valid MemberRegisterReq req){
         String mobile=req.getMobile();
         CommonResp<Long> commonResp=new CommonResp<>();
         commonResp.setContent(memberService.register(mobile));
