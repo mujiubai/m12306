@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.mujiubai.train.common.execption.BussinessExecption;
 import com.mujiubai.train.common.execption.BussinessExecptionEnum;
+import com.mujiubai.train.common.util.SnowUtil;
 import com.mujiubai.train.member.domain.Member;
 import com.mujiubai.train.member.domain.MemberExample;
 import com.mujiubai.train.member.mapper.MemberMapper;
@@ -29,7 +30,7 @@ public class MemberService {
             throw new BussinessExecption(BussinessExecptionEnum.MEMBER_MOBILE_EXIST);
         }
         Member member=new Member();
-        member.setId(System.currentTimeMillis());
+        member.setId(SnowUtil.getSnowFlakeNextId());
         member.setMobile(mobile);
         memberMapper.insert(member);
         return member.getId();
