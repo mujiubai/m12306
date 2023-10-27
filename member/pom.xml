@@ -25,8 +25,8 @@
 		<dependency>
 			<groupId>com.mujiubai</groupId>
 			<artifactId>common</artifactId>
+			<version>${project.version}</version>
 			<!-- <version>0.0.1-SNAPSHOT</version> -->
-			<type>pom</type> <!-- vscode中引用自定义pom需要加该行 -->
 		</dependency>
 
 		<dependency>

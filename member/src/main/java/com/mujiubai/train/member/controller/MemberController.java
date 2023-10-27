@@ -1,11 +1,15 @@
 package com.mujiubai.train.member.controller;
 
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mujiubai.train.member.req.MemberRegisterReq;
 import com.mujiubai.train.member.service.MemberService;
+import com.mujiubai.train.common.resp.CommonResp;
+
 
 import jakarta.annotation.Resource;
 
@@ -17,18 +21,25 @@ public class MemberController {
     private MemberService memberService;
 
     @GetMapping("/hello")
-    public String hello() {
-        return "hello world123";
+    public CommonResp<String> hello() {
+        CommonResp<String> commonResp=new CommonResp<>();
+        commonResp.setContent("hello world123");
+        return commonResp;
     }
 
     @GetMapping("/count")
-    public Integer count(){
-        return memberService.count();
+    public CommonResp<Integer> count(){
+        CommonResp<Integer> commonResp=new CommonResp<>();
+        commonResp.setContent(memberService.count());
+        return commonResp;
     }
 
     @PostMapping("/register")
-    public Long register(String mobile){
-        return memberService.register(mobile);
+    public CommonResp<Long> register(MemberRegisterReq req){
+        String mobile=req.getMobile();
+        CommonResp<Long> commonResp=new CommonResp<>();
+        commonResp.setContent(memberService.register(mobile));
+        return commonResp;
     }
 
 }

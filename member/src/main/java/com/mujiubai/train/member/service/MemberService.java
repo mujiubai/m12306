@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.mujiubai.train.common.execption.BussinessExecption;
+import com.mujiubai.train.common.execption.BussinessExecptionEnum;
 import com.mujiubai.train.member.domain.Member;
 import com.mujiubai.train.member.domain.MemberExample;
 import com.mujiubai.train.member.mapper.MemberMapper;
@@ -24,7 +26,7 @@ public class MemberService {
         memberExample.createCriteria().andMobileEqualTo(mobile);
         List<Member> list=memberMapper.selectByExample(memberExample);
         if(!list.isEmpty()){
-            throw new RuntimeException("手机号已注册");
+            throw new BussinessExecption(BussinessExecptionEnum.MEMBER_MOBILE_EXIST);
         }
         Member member=new Member();
         member.setId(System.currentTimeMillis());
