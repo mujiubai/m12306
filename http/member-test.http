@@ -3,3 +3,11 @@ GET http://127.0.0.1:8001/member/member//hello
 GET http://127.0.0.1:8000/member/member/hello
 
 GET http://127.0.0.1:8000/member/member/count
+
+# POST http://127.0.0.1:8000/member/member/register HTTP/1.1
+# mobile=123
+
+POST http://127.0.0.1:8000/member/member/register HTTP/1.1
+Content-Type:application/x-www-form-urlencoded
+
+mobile=1344
