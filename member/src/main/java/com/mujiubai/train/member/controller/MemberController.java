@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mujiubai.train.member.req.MemberLoginReq;
 import com.mujiubai.train.member.req.MemberRegisterReq;
+import com.mujiubai.train.member.req.MemberSendCodeReq;
+import com.mujiubai.train.member.resp.MemberLoginResp;
 import com.mujiubai.train.member.service.MemberService;
 import com.mujiubai.train.common.resp.CommonResp;
 
@@ -37,9 +40,25 @@ public class MemberController {
 
     @PostMapping("/register")
     public CommonResp<Long> register(@Valid MemberRegisterReq req){
-        String mobile=req.getMobile();
+        
         CommonResp<Long> commonResp=new CommonResp<>();
-        commonResp.setContent(memberService.register(mobile));
+        commonResp.setContent(memberService.register(req));
+        return commonResp;
+    }
+
+    @PostMapping("/send-code")
+    public CommonResp<Long> sendCode(@Valid MemberSendCodeReq req){
+        
+        CommonResp<Long> commonResp=new CommonResp<>();
+        memberService.sendCode(req);
+        return commonResp;
+    }
+
+    @PostMapping("/login")
+    public CommonResp<MemberLoginResp> login(@Valid MemberLoginReq req){
+        
+        CommonResp<MemberLoginResp> commonResp=new CommonResp<>();
+        commonResp.setContent(memberService.login(req));
         return commonResp;
     }
 

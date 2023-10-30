@@ -2,7 +2,9 @@ package com.mujiubai.train.common.execption;
 
 public enum BussinessExecptionEnum {
 
-    MEMBER_MOBILE_EXIST("手机号已注册");
+    MEMBER_MOBILE_EXIST("手机号已注册"),
+    MEMBER_MOBILE_NOT_EXIST("手机号不存在"),
+    MEMBER_CODE_ERROR("验证码错误");
     
     private String desc;
 
