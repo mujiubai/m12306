@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.mujiubai.train.common.aspect.LogAspect;
 import com.mujiubai.train.common.execption.BussinessExecption;
 import com.mujiubai.train.common.execption.BussinessExecptionEnum;
+import com.mujiubai.train.common.util.JwtUtil;
 import com.mujiubai.train.common.util.SnowUtil;
 import com.mujiubai.train.member.domain.Member;
 import com.mujiubai.train.member.domain.MemberExample;
@@ -86,9 +87,14 @@ public class MemberService {
         if(!"1234".equals(req.getCode())){
             throw new BussinessExecption(BussinessExecptionEnum.MEMBER_CODE_ERROR);
         }
-        
+
+        MemberLoginResp resp=BeanUtil.copyProperties(memberDB, MemberLoginResp.class);
+        String token=JwtUtil.createToken(memberDB.getId(),memberDB.getMobile());
+        resp.setToken(token);
+        LOG.info("生成token成功: {}",token);
+
         LOG.info("通过验证码登录成功！");
-        return BeanUtil.copyProperties(memberDB, MemberLoginResp.class);
+        return resp;
     }
 
     private Member selectByMoblie(String mobile) {
