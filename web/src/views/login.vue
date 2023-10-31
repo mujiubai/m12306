@@ -30,14 +30,15 @@ import { defineComponent, reactive } from 'vue';
 import axios from 'axios'
 import { notification } from 'ant-design-vue';
 import { useRouter } from 'vue-router'; 
+import store from '@/store';
 
 export default defineComponent({
   name: "login-view",
   setup() {
     const router=useRouter();
     const loginForm = reactive({
-      mobile: '',
-      code: '',
+      mobile: '13441112221',
+      code: '1234',
     });
 
     const sendCode = () => {
@@ -56,6 +57,7 @@ export default defineComponent({
         let data=response.data
         if(data.success){
           notification.success({description:'登录成功'});
+          store.commit("setMember",data.content)
           //登录成功，跳转中控界面
           router.push("/");
         }else{
