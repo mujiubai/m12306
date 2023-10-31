@@ -50,6 +50,7 @@ export default defineComponent({
 
     return {
       selectedKeys1: ref(['1']),
+      openKeys:ref(['sub1'])
     };
   },
 });
