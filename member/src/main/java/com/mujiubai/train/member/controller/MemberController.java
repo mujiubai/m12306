@@ -1,8 +1,10 @@
 package com.mujiubai.train.member.controller;
 
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +41,7 @@ public class MemberController {
     }
 
     @PostMapping("/register")
-    public CommonResp<Long> register(@Valid MemberRegisterReq req){
+    public CommonResp<Long> register(@Valid @RequestBody MemberRegisterReq req){
         
         CommonResp<Long> commonResp=new CommonResp<>();
         commonResp.setContent(memberService.register(req));
@@ -47,7 +49,7 @@ public class MemberController {
     }
 
     @PostMapping("/send-code")
-    public CommonResp<Long> sendCode(@Valid MemberSendCodeReq req){
+    public CommonResp<Long> sendCode(@Valid @RequestBody MemberSendCodeReq req){
         
         CommonResp<Long> commonResp=new CommonResp<>();
         memberService.sendCode(req);
@@ -55,7 +57,7 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public CommonResp<MemberLoginResp> login(@Valid MemberLoginReq req){
+    public CommonResp<MemberLoginResp> login(@Valid @RequestBody MemberLoginReq req){
         
         CommonResp<MemberLoginResp> commonResp=new CommonResp<>();
         commonResp.setContent(memberService.login(req));
