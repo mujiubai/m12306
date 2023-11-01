@@ -8,3 +8,16 @@ Content-Type:application/json
 "idCard":"12342134124174",
 "type":"1"
 }
+
+
+POST http://127.0.0.1:8000/member/passenger/save HTTP/1.1
+Content-Type:application/json
+token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE2OTg4MzgyNzAsIm1vYmlsZSI6IjEzNDQxMTEyMjIxIiwiaWQiOjE3MTg5NjE5NTcyMTk5OTU2NDgsImV4cCI6MTY5ODkyNDY3MCwiaWF0IjoxNjk4ODM4MjcwfQ.ZHihZKYo-_7t_Xb2XWnD42Z3FKP4PWE-vxPueywiQKI
+
+{
+"memberId":"1344111222112123",
+"name":"mujiubai",
+"idCard":"12342134124174",
+"type":"1"
+}
+
