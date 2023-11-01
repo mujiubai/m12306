@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.mujiubai.train.common.aspect.LogAspect;
+import com.mujiubai.train.common.context.LoginMemberContext;
 import com.mujiubai.train.common.execption.BussinessExecption;
 import com.mujiubai.train.common.execption.BussinessExecptionEnum;
 import com.mujiubai.train.common.util.JwtUtil;
@@ -39,6 +40,7 @@ public class PassengerService {
     public void save(PassengerSaveReq req){
         DateTime now=DateTime.now();
         Passenger passenger=BeanUtil.copyProperties(req, Passenger.class);
+        passenger.setMemberId(LoginMemberContext.getMember().getId());
         passenger.setId(SnowUtil.getSnowFlakeNextId());
         passenger.setCreateTime(now);
         passenger.setUpdateTime(now);

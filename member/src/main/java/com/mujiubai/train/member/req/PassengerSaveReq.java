@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 public class PassengerSaveReq {
     private Long id;
-    @NotNull(message = "会员id 不能为空")
+    // @NotNull(message = "会员id 不能为空")
     private Long memberId;
     @NotBlank(message = "名字 不能为空")
     private String name;
