@@ -6,7 +6,7 @@ import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 import * as Icons from '@ant-design/icons-vue'
 import axios from 'axios'
-
+import { notification } from 'ant-design-vue';
 
 const app=createApp(App);
 app.use(Antd).use(store).use(router).mount('#app');
@@ -20,16 +20,28 @@ for(const i in icons){
 // axios拦截器
 axios.interceptors.request.use(function(config){
     console.log('请求参数',config);
+    if(store.state.member.token){
+        config.headers.token=store.state.member.token;
+        console.log("请求参数添加token：",store.state.member.token);
+    }
     return config;
 }, error =>{
     return Promise.reject(error);
 });
+
 
 axios.interceptors.response.use(function(response){
     console.log('返回结果',response);
     return response;
 }, error =>{
     console.log('返回错误',error);
+    const status=error.response.status;
+    if(status==401){
+        console.log("未登录或请求超时,跳转登录页");
+        store.commit("setMember",{});
+        notification.error({ description: "未登录或登录超时" });
+        router.push('/login');
+    }
     return Promise.reject(error);
 });
 
