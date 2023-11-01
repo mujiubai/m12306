@@ -1,4 +1,4 @@
-package com.mujiubai.train.common.util;
+package com.mujiubai.train.gateway.util;
 
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;

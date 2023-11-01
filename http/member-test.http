@@ -3,6 +3,8 @@ GET http://127.0.0.1:8001/member/member//hello
 GET http://127.0.0.1:8000/member/member/hello
 
 GET http://127.0.0.1:8000/member/member/count
+mobile:13441112222
+token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE2OTg4MDcwNDUsIm1vYmlsZSI6IjEzNDQxMTEyMjIxIiwiaWQiOjE3MTg5NjE5NTcyMTk5OTU2NDgsImV4cCI6MTY5ODg5MzQ0NSwiaWF0IjoxNjk4ODA3MDQ1fQ.chUd7mEOQIH9a6x1YPZnlTZ8xLJ0JsWhMQ0zjszF9EY
 
 # POST http://127.0.0.1:8000/member/member/register HTTP/1.1
 # mobile=123
