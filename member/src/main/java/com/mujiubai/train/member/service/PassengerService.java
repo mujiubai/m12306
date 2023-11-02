@@ -79,4 +79,8 @@ public class PassengerService {
         LOG.info("总页数：{}", pageInfo.getPages());
         return resp;
     }
+
+    public void delete(Long id){
+        passengerMapper.deleteByPrimaryKey(id);
+    }
 }
