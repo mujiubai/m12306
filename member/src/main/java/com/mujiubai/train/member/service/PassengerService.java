@@ -60,6 +60,7 @@ public class PassengerService {
         if(req.getMemberId()!=null){
             criteria.andMemberIdEqualTo(req.getMemberId());
         }
+        passengerExample.setOrderByClause("id desc");
         PageHelper.startPage(req.getPage(), req.getSize());
         List<Passenger> listPassenger=passengerMapper.selectByExample(passengerExample);
         List<PassengerQueryResp> list=BeanUtil.copyToList(listPassenger,PassengerQueryResp.class);
