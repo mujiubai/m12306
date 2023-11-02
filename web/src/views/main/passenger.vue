@@ -10,6 +10,26 @@
            :pagination="pagination"
            @change="handleTableChange"
            :loading="loading">
+    <template #bodyCell="{ column, record }">
+      <template v-if="column.dataIndex === 'operation'">
+        <a-space>
+          <a-popconfirm
+              title="删除后不可恢复，确认删除?"
+              @confirm="onDelete(record)"
+              ok-text="确认" cancel-text="取消">
+            <a style="color: red">删除</a>
+          </a-popconfirm>
+          <a @click="onEdit(record)">编辑</a>
+        </a-space>
+      </template>
+      <template v-else-if="column.dataIndex === 'type'">
+        <span v-for="item in PASSENGER_TYPE_ARRAY" :key="item.code">
+          <span v-if="item.code === record.type">
+            {{item.desc}}
+          </span>
+        </span>
+      </template>
+    </template>
   </a-table>
   <a-modal v-model:visible="visible" title="乘车人" @ok="handleOk"
            ok-text="确认" cancel-text="取消">
@@ -55,10 +75,15 @@ export default defineComponent({
     const pagination = ref({
       total: 0,
       current: 1,
-      pageSize: 2,
+      pageSize: 10,
     });
     let loading = ref(false);
     const columns = [
+    {
+      title: '会员id',
+      dataIndex: 'memberId',
+      key: 'memberId',
+    },
     {
       title: '姓名',
       dataIndex: 'name',
@@ -74,6 +99,10 @@ export default defineComponent({
       dataIndex: 'type',
       key: 'type',
     },
+    {
+      title: '操作',
+      dataIndex: 'operation'
+    }
     ];
 
     const onAdd = () => {
@@ -81,6 +110,25 @@ export default defineComponent({
       visible.value = true;
     };
 
+    const onEdit = (record) => {
+      passenger.value = window.Tool.copy(record);
+      visible.value = true;
+    };
+
+    const onDelete = (record) => {
+      axios.delete("/member/passenger/delete/" + record.id).then((response) => {
+        const data = response.data;
+        if (data.success) {
+          notification.success({description: "删除成功！"});
+          handleQuery({
+            page: pagination.value.current,
+            size: pagination.value.pageSize,
+          });
+        } else {
+          notification.error({description: data.message});
+        }
+      });
+    };
 
     const handleOk = () => {
       axios.post("/member/passenger/save", passenger.value).then((response) => {
@@ -152,6 +200,8 @@ export default defineComponent({
       loading,
       onAdd,
       handleOk,
+      onEdit,
+      onDelete
     };
   },
 });
