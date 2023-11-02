@@ -17,13 +17,17 @@ import com.mujiubai.train.common.util.SnowUtil;
 import com.mujiubai.train.member.domain.Member;
 import com.mujiubai.train.member.domain.MemberExample;
 import com.mujiubai.train.member.domain.Passenger;
+import com.mujiubai.train.member.domain.PassengerExample;
+import com.mujiubai.train.member.domain.PassengerExample.Criteria;
 import com.mujiubai.train.member.mapper.MemberMapper;
 import com.mujiubai.train.member.mapper.PassengerMapper;
 import com.mujiubai.train.member.req.MemberLoginReq;
 import com.mujiubai.train.member.req.MemberRegisterReq;
 import com.mujiubai.train.member.req.MemberSendCodeReq;
+import com.mujiubai.train.member.req.PassengerQueryReq;
 import com.mujiubai.train.member.req.PassengerSaveReq;
 import com.mujiubai.train.member.resp.MemberLoginResp;
+import com.mujiubai.train.member.resp.PassengerQueryResp;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
@@ -45,5 +49,16 @@ public class PassengerService {
         passenger.setCreateTime(now);
         passenger.setUpdateTime(now);
         passengerMapper.insert(passenger);
+    }
+
+    public List<PassengerQueryResp> quertList(PassengerQueryReq req){
+        PassengerExample passengerExample=new PassengerExample();
+        Criteria criteria=passengerExample.createCriteria();
+        if(req.getMemberId()!=null){
+            criteria.andMemberIdEqualTo(req.getMemberId());
+        }
+        List<Passenger> listPassenger=passengerMapper.selectByExample(passengerExample);
+        List<PassengerQueryResp> list=BeanUtil.copyToList(listPassenger,PassengerQueryResp.class);
+        return list;
     }
 }
