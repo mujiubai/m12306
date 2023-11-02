@@ -44,33 +44,39 @@ public class PassengerService {
     @Resource
     private PassengerMapper passengerMapper;
 
-    public void save(PassengerSaveReq req){
-        DateTime now=DateTime.now();
-        Passenger passenger=BeanUtil.copyProperties(req, Passenger.class);
-        passenger.setMemberId(LoginMemberContext.getMember().getId());
-        passenger.setId(SnowUtil.getSnowFlakeNextId());
-        passenger.setCreateTime(now);
+    public void save(PassengerSaveReq req) {
+        DateTime now = DateTime.now();
+        Passenger passenger = BeanUtil.copyProperties(req, Passenger.class);
         passenger.setUpdateTime(now);
-        passengerMapper.insert(passenger);
+        //id存在则说明是更新乘车人，否则是插入新乘车人
+        if (passenger.getId() == null) {
+            passenger.setMemberId(LoginMemberContext.getMember().getId());
+            passenger.setId(SnowUtil.getSnowFlakeNextId());
+            passenger.setCreateTime(now);
+            passengerMapper.insert(passenger);
+        } else {
+            passengerMapper.updateByPrimaryKey(passenger);
+        }
+
     }
 
-    public PageResp<PassengerQueryResp> quertList(PassengerQueryReq req){
-        PassengerExample passengerExample=new PassengerExample();
-        Criteria criteria=passengerExample.createCriteria();
-        if(req.getMemberId()!=null){
+    public PageResp<PassengerQueryResp> quertList(PassengerQueryReq req) {
+        PassengerExample passengerExample = new PassengerExample();
+        Criteria criteria = passengerExample.createCriteria();
+        if (req.getMemberId() != null) {
             criteria.andMemberIdEqualTo(req.getMemberId());
         }
         passengerExample.setOrderByClause("id desc");
         PageHelper.startPage(req.getPage(), req.getSize());
-        List<Passenger> listPassenger=passengerMapper.selectByExample(passengerExample);
-        List<PassengerQueryResp> list=BeanUtil.copyToList(listPassenger,PassengerQueryResp.class);
-        PageInfo<Passenger> pageInfo=new PageInfo<>(listPassenger);
-        PageResp<PassengerQueryResp> resp=new PageResp<>();
+        List<Passenger> listPassenger = passengerMapper.selectByExample(passengerExample);
+        List<PassengerQueryResp> list = BeanUtil.copyToList(listPassenger, PassengerQueryResp.class);
+        PageInfo<Passenger> pageInfo = new PageInfo<>(listPassenger);
+        PageResp<PassengerQueryResp> resp = new PageResp<>();
         resp.setList(list);
         resp.setTotal(pageInfo.getTotal());
 
-        LOG.info("总行数：{}",pageInfo.getTotal());
-        LOG.info("总页数：{}",pageInfo.getPages());
+        LOG.info("总行数：{}", pageInfo.getTotal());
+        LOG.info("总页数：{}", pageInfo.getPages());
         return resp;
     }
 }

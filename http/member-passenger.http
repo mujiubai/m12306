@@ -21,6 +21,20 @@ token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE2OTg4MzgyNzAsIm1vYmlsZSI6
 }
 
 
+POST http://127.0.0.1:8000/member/passenger/save HTTP/1.1
+Content-Type:application/json
+token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE2OTg4OTY1MzIsIm1vYmlsZSI6IjEzNDQxMTEyMjIxIiwiaWQiOjE3MTg5NjE5NTcyMTk5OTU2NDgsImV4cCI6MTY5ODk4MjkzMiwiaWF0IjoxNjk4ODk2NTMyfQ.-_rcC6tPlzfC-FbhBez97SMDEPcya5RgKNUYTildJwA
+
+{
+"id":"1719996744772751360",
+"memberId":"1718961957219995648",
+"name":"mujiubai",
+"idCard":"12342134124174",
+"type":"1"
+}
+
+
+
 GET http://127.0.0.1:8000/member/passenger/query-list
 token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE2OTg4OTY1MzIsIm1vYmlsZSI6IjEzNDQxMTEyMjIxIiwiaWQiOjE3MTg5NjE5NTcyMTk5OTU2NDgsImV4cCI6MTY5ODk4MjkzMiwiaWF0IjoxNjk4ODk2NTMyfQ.-_rcC6tPlzfC-FbhBez97SMDEPcya5RgKNUYTildJwA
 
