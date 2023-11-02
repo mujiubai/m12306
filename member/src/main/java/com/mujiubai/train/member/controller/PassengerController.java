@@ -21,7 +21,7 @@ import com.mujiubai.train.member.service.MemberService;
 import com.mujiubai.train.member.service.PassengerService;
 import com.mujiubai.train.common.context.LoginMemberContext;
 import com.mujiubai.train.common.resp.CommonResp;
-
+import com.mujiubai.train.common.resp.PageResp;
 
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -42,8 +42,8 @@ public class PassengerController {
     }
 
     @GetMapping("/query-list")
-    public CommonResp<List<PassengerQueryResp>> queryList(@Valid PassengerQueryReq req){        
-        CommonResp<List<PassengerQueryResp>> commonResp=new CommonResp<>();
+    public CommonResp<PageResp<PassengerQueryResp>> queryList(@Valid PassengerQueryReq req){        
+        CommonResp<PageResp<PassengerQueryResp>> commonResp=new CommonResp<>();
         req.setMemberId(LoginMemberContext.getId());
         commonResp.setContent(passengerService.quertList(req));;
         return commonResp;

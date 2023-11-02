@@ -8,10 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.mujiubai.train.common.aspect.LogAspect;
 import com.mujiubai.train.common.context.LoginMemberContext;
 import com.mujiubai.train.common.execption.BussinessExecption;
 import com.mujiubai.train.common.execption.BussinessExecptionEnum;
+import com.mujiubai.train.common.resp.PageResp;
 import com.mujiubai.train.common.util.JwtUtil;
 import com.mujiubai.train.common.util.SnowUtil;
 import com.mujiubai.train.member.domain.Member;
@@ -51,14 +54,22 @@ public class PassengerService {
         passengerMapper.insert(passenger);
     }
 
-    public List<PassengerQueryResp> quertList(PassengerQueryReq req){
+    public PageResp<PassengerQueryResp> quertList(PassengerQueryReq req){
         PassengerExample passengerExample=new PassengerExample();
         Criteria criteria=passengerExample.createCriteria();
         if(req.getMemberId()!=null){
             criteria.andMemberIdEqualTo(req.getMemberId());
         }
+        PageHelper.startPage(req.getPage(), req.getSize());
         List<Passenger> listPassenger=passengerMapper.selectByExample(passengerExample);
         List<PassengerQueryResp> list=BeanUtil.copyToList(listPassenger,PassengerQueryResp.class);
-        return list;
+        PageInfo<Passenger> pageInfo=new PageInfo<>(listPassenger);
+        PageResp<PassengerQueryResp> resp=new PageResp<>();
+        resp.setList(list);
+        resp.setTotal(pageInfo.getTotal());
+
+        LOG.info("总行数：{}",pageInfo.getTotal());
+        LOG.info("总页数：{}",pageInfo.getPages());
+        return resp;
     }
 }

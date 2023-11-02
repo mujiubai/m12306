@@ -1,10 +1,8 @@
 package com.mujiubai.train.member.req;
 
-import java.util.Date;
+import com.mujiubai.train.common.req.PageReq;
 
-import jakarta.validation.constraints.NotBlank;
-
-public class PassengerQueryReq {
+public class PassengerQueryReq extends PageReq{
 
     private Long memberId;
 
