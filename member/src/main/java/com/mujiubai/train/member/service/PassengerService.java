@@ -60,7 +60,7 @@ public class PassengerService {
 
     }
 
-    public PageResp<PassengerQueryResp> quertList(PassengerQueryReq req) {
+    public PageResp<PassengerQueryResp> queryList(PassengerQueryReq req) {
         PassengerExample passengerExample = new PassengerExample();
         Criteria criteria = passengerExample.createCriteria();
         if (req.getMemberId() != null) {

@@ -47,7 +47,7 @@ public class PassengerController {
     public CommonResp<PageResp<PassengerQueryResp>> queryList(@Valid PassengerQueryReq req){        
         CommonResp<PageResp<PassengerQueryResp>> commonResp=new CommonResp<>();
         req.setMemberId(LoginMemberContext.getId());
-        commonResp.setContent(passengerService.quertList(req));;
+        commonResp.setContent(passengerService.queryList(req));;
         return commonResp;
     }
 
