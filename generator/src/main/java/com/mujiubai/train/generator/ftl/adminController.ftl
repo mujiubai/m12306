@@ -1,4 +1,4 @@
-package com.mujiubai.train.${module}.controller;
+package com.mujiubai.train.${module}.controller.admin;
 
 import com.mujiubai.train.common.resp.CommonResp;
 import com.mujiubai.train.common.resp.PageResp;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/${do_main}")
-public class ${Domain}Controller {
+@RequestMapping("/admin/${do_main}")
+public class ${Domain}AdminController {
     @Resource
     private ${Domain}Service ${domain}Service;
 
