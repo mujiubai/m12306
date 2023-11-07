@@ -2,6 +2,7 @@ package com.mujiubai.train.generator.gen;
 
 import cn.hutool.core.util.StrUtil;
 
+import com.mujiubai.train.business.enums.SeatColEnum;
 import com.mujiubai.train.business.enums.SeatTypeEnum;
 import com.mujiubai.train.business.enums.TrainTypeEnum;
 import com.mujiubai.train.member.enums.PassengerTypeEnum;
@@ -23,6 +24,7 @@ public class EnumGenerator {
             toJson(PassengerTypeEnum.class, bufferObject, bufferArray);
             toJson(TrainTypeEnum.class, bufferObject, bufferArray);
             toJson(SeatTypeEnum.class, bufferObject, bufferArray);
+            toJson(SeatColEnum.class, bufferObject, bufferArray);
 
             StringBuffer buffer = bufferObject.append("\r\n").append(bufferArray);
             writeJs(buffer);
