@@ -5,6 +5,8 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mujiubai.train.common.execption.BussinessExecption;
+import com.mujiubai.train.common.execption.BussinessExecptionEnum;
 import com.mujiubai.train.common.resp.PageResp;
 import com.mujiubai.train.common.util.SnowUtil;
 import com.mujiubai.train.business.domain.Station;
@@ -36,6 +38,13 @@ public class StationService {
         DateTime now = DateTime.now();
         Station station = BeanUtil.copyProperties(req, Station.class);
         if (ObjectUtil.isNull(station.getId())) {
+            //校验车站是否存在
+            StationExample stationExample=new StationExample();
+            stationExample.createCriteria().andNameEqualTo(req.getName());
+            List<Station> list=stationMapper.selectByExample(stationExample);
+            if(!list.isEmpty()){
+                throw new BussinessExecption(BussinessExecptionEnum.BUSINESS_STATION_EXIST);
+            }
             station.setId(SnowUtil.getSnowFlakeNextId());
             station.setCreateTime(now);
             station.setUpdateTime(now);
