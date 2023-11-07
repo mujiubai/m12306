@@ -40,7 +40,7 @@ public class StationService {
         if (ObjectUtil.isNull(station.getId())) {
             // 校验车站是否存在
             Station stationDB = selectByStationName(req.getName());
-            if (stationDB == null) {
+            if (stationDB != null) {
                 throw new BussinessExecption(BussinessExecptionEnum.BUSINESS_STATION_EXIST);
             }
             station.setId(SnowUtil.getSnowFlakeNextId());
@@ -57,7 +57,7 @@ public class StationService {
         StationExample stationExample = new StationExample();
         stationExample.createCriteria().andNameEqualTo(name);
         List<Station> list = stationMapper.selectByExample(stationExample);
-        if (list.isEmpty()) {
+        if (!list.isEmpty()) {
             return list.get(0);
         } else {
             return null;
