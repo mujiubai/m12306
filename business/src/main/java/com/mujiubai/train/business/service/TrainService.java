@@ -5,9 +5,13 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mujiubai.train.common.execption.BussinessExecption;
+import com.mujiubai.train.common.execption.BussinessExecptionEnum;
 import com.mujiubai.train.common.resp.PageResp;
 import com.mujiubai.train.common.util.SnowUtil;
 import com.mujiubai.train.business.domain.Train;
+import com.mujiubai.train.business.domain.TrainCarriage;
+import com.mujiubai.train.business.domain.TrainCarriageExample;
 import com.mujiubai.train.business.domain.TrainExample;
 import com.mujiubai.train.business.mapper.TrainMapper;
 import com.mujiubai.train.business.req.TrainQueryReq;
@@ -32,6 +36,10 @@ public class TrainService {
         DateTime now = DateTime.now();
         Train train = BeanUtil.copyProperties(req, Train.class);
         if (ObjectUtil.isNull(train.getId())) {
+            Train trainDB = selectByUnique(req.getCode());
+            if (trainDB != null) {
+                throw new BussinessExecption(BussinessExecptionEnum.BUSINESS_TRAIN_CODE_UNIQUE_ERROR);
+            }
             train.setId(SnowUtil.getSnowFlakeNextId());
             train.setCreateTime(now);
             train.setUpdateTime(now);
@@ -39,6 +47,17 @@ public class TrainService {
         } else {
             train.setUpdateTime(now);
             trainMapper.updateByPrimaryKey(train);
+        }
+    }
+
+        private Train selectByUnique(String code) {
+        TrainExample trainExample = new TrainExample();
+        trainExample.createCriteria().andCodeEqualTo(code);
+        List<Train> list = trainMapper.selectByExample(trainExample);
+        if (!list.isEmpty()) {
+            return list.get(0);
+        } else {
+            return null;
         }
     }
 
