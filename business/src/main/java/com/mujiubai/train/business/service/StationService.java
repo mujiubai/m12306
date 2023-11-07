@@ -38,11 +38,9 @@ public class StationService {
         DateTime now = DateTime.now();
         Station station = BeanUtil.copyProperties(req, Station.class);
         if (ObjectUtil.isNull(station.getId())) {
-            //校验车站是否存在
-            StationExample stationExample=new StationExample();
-            stationExample.createCriteria().andNameEqualTo(req.getName());
-            List<Station> list=stationMapper.selectByExample(stationExample);
-            if(!list.isEmpty()){
+            // 校验车站是否存在
+            Station stationDB = selectByStationName(req.getName());
+            if (stationDB == null) {
                 throw new BussinessExecption(BussinessExecptionEnum.BUSINESS_STATION_EXIST);
             }
             station.setId(SnowUtil.getSnowFlakeNextId());
@@ -52,6 +50,17 @@ public class StationService {
         } else {
             station.setUpdateTime(now);
             stationMapper.updateByPrimaryKey(station);
+        }
+    }
+
+    private Station selectByStationName(String name) {
+        StationExample stationExample = new StationExample();
+        stationExample.createCriteria().andNameEqualTo(name);
+        List<Station> list = stationMapper.selectByExample(stationExample);
+        if (list.isEmpty()) {
+            return list.get(0);
+        } else {
+            return null;
         }
     }
 
