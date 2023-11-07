@@ -10,6 +10,7 @@ import com.mujiubai.train.common.util.SnowUtil;
 import com.mujiubai.train.business.domain.TrainCarriage;
 import com.mujiubai.train.business.domain.TrainCarriageExample;
 import com.mujiubai.train.business.domain.TrainSeatExample;
+import com.mujiubai.train.business.enums.SeatColEnum;
 import com.mujiubai.train.business.mapper.TrainCarriageMapper;
 import com.mujiubai.train.business.req.TrainCarriageQueryReq;
 import com.mujiubai.train.business.req.TrainCarriageSaveReq;
@@ -31,13 +32,13 @@ public class TrainCarriageService {
 
     public void save(TrainCarriageSaveReq req) {
         DateTime now = DateTime.now();
+
+        // 自动计算出列数和总座位数
+        List<SeatColEnum> seatColEnums = SeatColEnum.getColsByType(req.getSeatType());
+        req.setColCount(seatColEnums.size());
+        req.setSeatCount(req.getColCount() * req.getRowCount());
+        
         TrainCarriage trainCarriage = BeanUtil.copyProperties(req, TrainCarriage.class);
-        if(trainCarriage.getSeatCount()==null){
-            trainCarriage.setSeatCount(0);
-        }
-        if(trainCarriage.getColCount()==null){
-            trainCarriage.setColCount(0);
-        }
         if (ObjectUtil.isNull(trainCarriage.getId())) {
             trainCarriage.setId(SnowUtil.getSnowFlakeNextId());
             trainCarriage.setCreateTime(now);
