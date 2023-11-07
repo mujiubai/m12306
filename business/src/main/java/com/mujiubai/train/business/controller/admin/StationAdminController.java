@@ -5,6 +5,7 @@ import com.mujiubai.train.common.resp.PageResp;
 import com.mujiubai.train.business.req.StationQueryReq;
 import com.mujiubai.train.business.req.StationSaveReq;
 import com.mujiubai.train.business.resp.StationQueryResp;
+import com.mujiubai.train.business.resp.TrainQueryResp;
 import com.mujiubai.train.business.service.StationService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -34,5 +35,11 @@ public class StationAdminController {
     public CommonResp<Object> delete(@PathVariable Long id) {
         stationService.delete(id);
         return new CommonResp<>();
+    }
+
+    @GetMapping("/query-all")
+    public CommonResp<List<StationQueryResp>> queryList() {
+        List<StationQueryResp> list = stationService.queryAll();
+        return new CommonResp<>(list);
     }
 }

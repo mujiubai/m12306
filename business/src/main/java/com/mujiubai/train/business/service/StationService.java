@@ -9,10 +9,14 @@ import com.mujiubai.train.common.resp.PageResp;
 import com.mujiubai.train.common.util.SnowUtil;
 import com.mujiubai.train.business.domain.Station;
 import com.mujiubai.train.business.domain.StationExample;
+import com.mujiubai.train.business.domain.Train;
+import com.mujiubai.train.business.domain.TrainExample;
 import com.mujiubai.train.business.mapper.StationMapper;
 import com.mujiubai.train.business.req.StationQueryReq;
 import com.mujiubai.train.business.req.StationSaveReq;
 import com.mujiubai.train.business.resp.StationQueryResp;
+import com.mujiubai.train.business.resp.TrainQueryResp;
+
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,5 +70,12 @@ public class StationService {
 
     public void delete(Long id) {
         stationMapper.deleteByPrimaryKey(id);
+    }
+
+    public List<StationQueryResp> queryAll() {
+        StationExample stationExample = new StationExample();
+        stationExample.setOrderByClause("name_pinyin asc");
+        List<Station> stationList = stationMapper.selectByExample(stationExample);
+        return BeanUtil.copyToList(stationList, StationQueryResp.class);
     }
 }
