@@ -20,7 +20,7 @@ public class SchedulerConfig {
         SchedulerFactoryBean factory = new SchedulerFactoryBean();
         factory.setDataSource(dataSource);
         factory.setJobFactory(myJobFactory);
-        factory.setStartupDelay(2);
+        factory.setStartupDelay(2);//启动后多少秒执行
         return factory;
     }
 }
