@@ -46,6 +46,12 @@ public class DailyTrainService {
         DailyTrainExample dailyTrainExample = new DailyTrainExample();
         dailyTrainExample.setOrderByClause("id desc");
         DailyTrainExample.Criteria criteria = dailyTrainExample.createCriteria();
+        if(req.getDate()!=null){
+            criteria.andDateEqualTo(req.getDate());
+        }
+        if(req.getCode()!=null){
+            criteria.andCodeEqualTo(req.getCode());
+        }
 
         LOG.info("查询页码：{}", req.getPage());
         LOG.info("每页条数：{}", req.getSize());
