@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mujiubai.train.batch.feign.BusinessFeign;
 import com.mujiubai.train.common.resp.CommonResp;
+
+import jakarta.annotation.Resource;
 
 
 // import jakarta.annotation.Resource;
@@ -20,9 +23,12 @@ public class BatchController {
 
     // @Resource
     // private BusinessController memberService;
+    @Resource
+    BusinessFeign businessFeign;
 
     @GetMapping("/hello")
     public CommonResp<String> hello() {
+        String ans=businessFeign.hello();
         CommonResp<String> commonResp=new CommonResp<>();
         commonResp.setContent("hello world! batch");
         return commonResp;
