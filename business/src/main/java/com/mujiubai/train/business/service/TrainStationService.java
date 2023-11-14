@@ -36,11 +36,11 @@ public class TrainStationService {
         DateTime now = DateTime.now();
         TrainStation trainStation = BeanUtil.copyProperties(req, TrainStation.class);
         if (ObjectUtil.isNull(trainStation.getId())) {
-            TrainStation trainStationDB = selectByUnique(req.getTrainCode(),req.getIndex());
+            TrainStation trainStationDB = selectByUnique(req.getTrainCode(), req.getIndex());
             if (trainStationDB != null) {
                 throw new BussinessExecption(BussinessExecptionEnum.BUSINESS_TRAIN_STATION_INDEX_UNIQUE_ERROR);
             }
-            trainStationDB = selectByUnique(req.getTrainCode(),req.getName());
+            trainStationDB = selectByUnique(req.getTrainCode(), req.getName());
             if (trainStationDB != null) {
                 throw new BussinessExecption(BussinessExecptionEnum.BUSINESS_TRAIN_STATION_NAME_UNIQUE_ERROR);
             }
@@ -81,7 +81,7 @@ public class TrainStationService {
         TrainStationExample trainStationExample = new TrainStationExample();
         trainStationExample.setOrderByClause("train_code asc,'index' asc");
         TrainStationExample.Criteria criteria = trainStationExample.createCriteria();
-        if(req.getTrainCode()!=null){
+        if (req.getTrainCode() != null) {
             criteria.andTrainCodeEqualTo(req.getTrainCode());
         }
 
@@ -104,5 +104,12 @@ public class TrainStationService {
 
     public void delete(Long id) {
         trainStationMapper.deleteByPrimaryKey(id);
+    }
+
+    public List<TrainStation> selectByTrainCode(String trainCode) {
+        TrainStationExample trainStationExample = new TrainStationExample();
+        trainStationExample.setOrderByClause("`index` asc");
+        trainStationExample.createCriteria().andTrainCodeEqualTo(trainCode);
+        return trainStationMapper.selectByExample(trainStationExample);
     }
 }
