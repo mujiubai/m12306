@@ -12,6 +12,8 @@ import com.mujiubai.train.common.util.SnowUtil;
 import com.mujiubai.train.business.domain.TrainCarriage;
 import com.mujiubai.train.business.domain.TrainSeat;
 import com.mujiubai.train.business.domain.TrainSeatExample;
+import com.mujiubai.train.business.domain.TrainStation;
+import com.mujiubai.train.business.domain.TrainStationExample;
 import com.mujiubai.train.business.enums.SeatColEnum;
 import com.mujiubai.train.business.mapper.TrainSeatMapper;
 import com.mujiubai.train.business.req.TrainSeatQueryReq;
@@ -123,5 +125,12 @@ public class TrainSeatService {
             }
         }
         
+    }
+
+    public List<TrainSeat> selectByTrainCode(String trainCode) {
+        TrainSeatExample trainSeatExample = new TrainSeatExample();
+        trainSeatExample.setOrderByClause("id asc");
+        trainSeatExample.createCriteria().andTrainCodeEqualTo(trainCode);
+        return trainSeatMapper.selectByExample(trainSeatExample);
     }
 }

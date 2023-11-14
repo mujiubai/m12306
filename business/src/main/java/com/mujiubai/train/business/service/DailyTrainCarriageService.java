@@ -93,16 +93,16 @@ public class DailyTrainCarriageService {
     }
 
     public void genDaily(Date date, String trainCode) {
-        LOG.info("生成日期【{}】车次【{}】的车站信息开始", DateUtil.formatDate(date), trainCode);
+        LOG.info("生成日期【{}】车次【{}】的车厢信息开始", DateUtil.formatDate(date), trainCode);
 
-        // 删除某日某车次的车站信息
+        // 删除某日某车次的车厢信息
         DailyTrainCarriageExample dailyTrainCarriageExample = new DailyTrainCarriageExample();
         dailyTrainCarriageExample.createCriteria()
                 .andDateEqualTo(date)
                 .andTrainCodeEqualTo(trainCode);
         dailyTrainCarriageMapper.deleteByExample(dailyTrainCarriageExample);
 
-        // 查出某车次的所有的车站信息
+        // 查出某车次的所有的车厢信息
         List<TrainCarriage> CarriageList = trainCarriageService.selectByTrainCode(trainCode);
         if (CollUtil.isEmpty(CarriageList)) {
             LOG.info("该车次没有车厢基础数据，生成该车次的车厢信息结束");

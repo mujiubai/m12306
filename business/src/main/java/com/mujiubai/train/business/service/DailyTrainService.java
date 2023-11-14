@@ -2,6 +2,7 @@ package com.mujiubai.train.business.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -38,6 +39,9 @@ public class DailyTrainService {
 
     @Resource
     private DailyTrainCarriageService dailyTrainCarriageService;
+
+    @Resource
+    private DailyTrainSeatService dailyTrainSeatService;
 
     public void save(DailyTrainSaveReq req) {
         DateTime now = DateTime.now();
@@ -97,6 +101,7 @@ public class DailyTrainService {
     }
 
     private void genDailyTrain(Date date, Train train) {
+        LOG.info("生成日期【{}】车次【{}】的信息开始", DateUtil.formatDate(date), train.getCode());
         // 先删除数据库中原有车次
         DailyTrainExample dailyTrainExample = new DailyTrainExample();
         dailyTrainExample.createCriteria().andDateEqualTo(date).andCodeEqualTo(train.getCode());
@@ -117,5 +122,9 @@ public class DailyTrainService {
         // 生成每日车厢
         dailyTrainCarriageService.genDaily(date, train.getCode());
 
+        // 生成每日座位
+        dailyTrainSeatService.genDaily(date, train.getCode());
+
+        LOG.info("生成日期【{}】车次【{}】的信息结束", DateUtil.formatDate(date), train.getCode());
     }
 }
