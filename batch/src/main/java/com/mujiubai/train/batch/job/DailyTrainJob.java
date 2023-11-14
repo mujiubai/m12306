@@ -3,6 +3,8 @@ package com.mujiubai.train.batch.job;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
+
+import com.mujiubai.train.batch.feign.BusinessFeign;
 import com.mujiubai.train.common.resp.CommonResp;
 import jakarta.annotation.Resource;
 import org.quartz.DisallowConcurrentExecution;
@@ -20,13 +22,19 @@ public class DailyTrainJob implements Job {
 
     private static final Logger LOG = LoggerFactory.getLogger(DailyTrainJob.class);
 
+    @Resource
+    private BusinessFeign businessFeign;
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         // 增加日志流水号
         MDC.put("LOG_ID", System.currentTimeMillis() + RandomUtil.randomString(3));
-        LOG.info("生成车次数据开始");
-        
-        LOG.info("生成车次数据结束");
+        LOG.info("生成15天后的车次数据开始");
+        Date date = new Date();
+        DateTime dateTime = DateUtil.offsetDay(date, 15);
+        Date offSetDate = dateTime.toJdkDate();
+        CommonResp<Object> commonResp = businessFeign.genDaily(offSetDate);
+
+        LOG.info("生成15天后的车次数据结束：{}", commonResp);
     }
 }
