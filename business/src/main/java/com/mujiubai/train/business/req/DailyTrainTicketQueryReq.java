@@ -14,18 +14,18 @@ public class DailyTrainTicketQueryReq extends PageReq {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
-    private String startStation;
+    private String start;
 
-    private String endStation;
-
-    public String getTrainCode() {
-        return trainCode;
-    }
+    private String end;
 
     @Override
     public String toString() {
-        return "DailyTrainTicketQueryReq [trainCode=" + trainCode + ", date=" + date + ", startStation=" + startStation
-                + ", endStation=" + endStation + "]";
+        return "DailyTrainTicketQueryReq [trainCode=" + trainCode + ", date=" + date + ", start=" + start + ", end="
+                + end + "]";
+    }
+
+    public String getTrainCode() {
+        return trainCode;
     }
 
     public void setTrainCode(String trainCode) {
@@ -40,20 +40,20 @@ public class DailyTrainTicketQueryReq extends PageReq {
         this.date = date;
     }
 
-    public String getStartStation() {
-        return startStation;
+    public String getStart() {
+        return start;
     }
 
-    public void setStartStation(String startStation) {
-        this.startStation = startStation;
+    public void setStart(String start) {
+        this.start = start;
     }
 
-    public String getEndStation() {
-        return endStation;
+    public String getEnd() {
+        return end;
     }
 
-    public void setEndStation(String endStation) {
-        this.endStation = endStation;
+    public void setEnd(String end) {
+        this.end = end;
     }
 
     

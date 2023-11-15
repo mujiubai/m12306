@@ -69,11 +69,11 @@ public class DailyTrainTicketService {
         if (req.getTrainCode() != null) {
             criteria.andTrainCodeEqualTo(req.getTrainCode());
         }
-        if (req.getStartStation() != null) {
-            criteria.andStartEqualTo(req.getStartStation());
+        if (req.getStart() != null) {
+            criteria.andStartEqualTo(req.getStart());
         }
-        if (req.getEndStation() != null) {
-            criteria.andEndEqualTo(req.getEndStation());
+        if (req.getEnd() != null) {
+            criteria.andEndEqualTo(req.getEnd());
         }
 
         LOG.info("查询页码：{}", req.getPage());

@@ -1,14 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import store from '@/store'
-import { notification } from 'ant-design-vue'
+import store from "@/store";
+import {notification} from "ant-design-vue";
 
-const routes = [
-  {
+const routes = [{
     path: '/login',
-
     component: () => import('../views/login.vue')
-  },
-  {
+  }, {
     path: '/',
     component: () => import('../views/main.vue'),
     meta: {
@@ -20,19 +17,24 @@ const routes = [
     }, {
       path: 'passenger',
       component: () => import('../views/main/passenger.vue'),
-    }
-    ]
+    }, {
+      path: 'ticket',
+      component: () => import('../views/main/ticket.vue'),
+    }, 
+    // {
+    //   path: 'order',
+    //   component: () => import('../views/main/order.vue'),
+    // }
+  ]
   }, {
     path: '',
     redirect: '/welcome'
-  }]
+  }];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
-
-export default router
 
 // 路由登录拦截
 router.beforeEach((to, from, next) => {
@@ -54,3 +56,5 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
+export default router
