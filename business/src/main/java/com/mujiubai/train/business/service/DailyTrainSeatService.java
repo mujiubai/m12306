@@ -60,7 +60,8 @@ public class DailyTrainSeatService {
 
     public PageResp<DailyTrainSeatQueryResp> queryList(DailyTrainSeatQueryReq req) {
         DailyTrainSeatExample dailyTrainSeatExample = new DailyTrainSeatExample();
-        dailyTrainSeatExample.setOrderByClause("date desc, train_code asc, carriage_index asc, carriage_seat_index asc");
+        dailyTrainSeatExample
+                .setOrderByClause("date desc, train_code asc, carriage_index asc, carriage_seat_index asc");
         DailyTrainSeatExample.Criteria criteria = dailyTrainSeatExample.createCriteria();
         if (ObjectUtil.isNotEmpty(req.getTrainCode())) {
             criteria.andTrainCodeEqualTo(req.getTrainCode());
@@ -117,5 +118,18 @@ public class DailyTrainSeatService {
             dailyTrainSeatMapper.insert(dailyTrainSeat);
         }
         LOG.info("生成日期【{}】车次【{}】的座位信息结束", DateUtil.formatDate(date), trainCode);
+    }
+
+    public int countSeat(Date date, String trainCode, String seatType) {
+        DailyTrainSeatExample example = new DailyTrainSeatExample();
+        example.createCriteria()
+                .andDateEqualTo(date)
+                .andTrainCodeEqualTo(trainCode)
+                .andSeatTypeEqualTo(seatType);
+        long l = dailyTrainSeatMapper.countByExample(example);
+        if (l == 0L) {
+            return -1;
+        }
+        return (int) l;
     }
 }
