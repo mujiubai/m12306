@@ -48,7 +48,7 @@ public class PassengerService {
         DateTime now = DateTime.now();
         Passenger passenger = BeanUtil.copyProperties(req, Passenger.class);
         passenger.setUpdateTime(now);
-        //id存在则说明是更新乘车人，否则是插入新乘车人
+        // id存在则说明是更新乘车人，否则是插入新乘车人
         if (passenger.getId() == null) {
             passenger.setMemberId(LoginMemberContext.getMember().getId());
             passenger.setId(SnowUtil.getSnowFlakeNextId());
@@ -80,7 +80,19 @@ public class PassengerService {
         return resp;
     }
 
-    public void delete(Long id){
+    public void delete(Long id) {
         passengerMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 查询我的所有乘客
+     */
+    public List<PassengerQueryResp> queryMine() {
+        PassengerExample passengerExample = new PassengerExample();
+        passengerExample.setOrderByClause("name asc");
+        PassengerExample.Criteria criteria = passengerExample.createCriteria();
+        criteria.andMemberIdEqualTo(LoginMemberContext.getId());
+        List<Passenger> list = passengerMapper.selectByExample(passengerExample);
+        return BeanUtil.copyToList(list, PassengerQueryResp.class);
     }
 }
