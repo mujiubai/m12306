@@ -28,7 +28,7 @@ public class BatchController {
 
     @GetMapping("/hello")
     public CommonResp<String> hello() {
-        String ans=businessFeign.hello();
+        businessFeign.hello();
         CommonResp<String> commonResp=new CommonResp<>();
         commonResp.setContent("hello world! batch");
         return commonResp;

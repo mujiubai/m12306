@@ -24,8 +24,8 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public CommonResp exceptionHandler(Exception e) {
-        CommonResp commonResp = new CommonResp();
+    public CommonResp<Object> exceptionHandler(Exception e) {
+        CommonResp<Object> commonResp = new CommonResp<Object>();
         LOG.error("系统异常：", e);
         commonResp.setSuccess(false);
         commonResp.setMessage("系统出现异常，请联系管理员");
@@ -40,8 +40,8 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(value = BussinessExecption.class)
     @ResponseBody
-    public CommonResp exceptionHandler(BussinessExecption e) {
-        CommonResp commonResp = new CommonResp();
+    public CommonResp<Object> exceptionHandler(BussinessExecption e) {
+        CommonResp<Object> commonResp = new CommonResp<Object>();
         LOG.error("业务异常：{}", e.getE().getDesc());
         commonResp.setSuccess(false);
         commonResp.setMessage(e.getE().getDesc());
@@ -55,8 +55,8 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(value = BindException.class)
     @ResponseBody
-    public CommonResp exceptionHandler(BindException e) {
-        CommonResp commonResp = new CommonResp();
+    public CommonResp<Object> exceptionHandler(BindException e) {
+        CommonResp<Object> commonResp = new CommonResp<Object>();
         LOG.error("校验异常：{}", e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
         commonResp.setSuccess(false);
         commonResp.setMessage(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());

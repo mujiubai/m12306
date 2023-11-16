@@ -10,8 +10,6 @@ import com.mujiubai.train.common.execption.BussinessExecptionEnum;
 import com.mujiubai.train.common.resp.PageResp;
 import com.mujiubai.train.common.util.SnowUtil;
 import com.mujiubai.train.business.domain.Train;
-import com.mujiubai.train.business.domain.TrainCarriage;
-import com.mujiubai.train.business.domain.TrainCarriageExample;
 import com.mujiubai.train.business.domain.TrainExample;
 import com.mujiubai.train.business.mapper.TrainMapper;
 import com.mujiubai.train.business.req.TrainQueryReq;
@@ -64,7 +62,7 @@ public class TrainService {
     public PageResp<TrainQueryResp> queryList(TrainQueryReq req) {
         TrainExample trainExample = new TrainExample();
         trainExample.setOrderByClause("id desc");
-        TrainExample.Criteria criteria = trainExample.createCriteria();
+        // TrainExample.Criteria criteria = trainExample.createCriteria();
 
         LOG.info("查询页码：{}", req.getPage());
         LOG.info("每页条数：{}", req.getSize());

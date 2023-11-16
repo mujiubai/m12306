@@ -17,7 +17,6 @@ public class BussinessExecption extends RuntimeException{
 
     @Override
     public synchronized Throwable fillInStackTrace() {
-        // TODO Auto-generated method stub
         return this;
     }
     

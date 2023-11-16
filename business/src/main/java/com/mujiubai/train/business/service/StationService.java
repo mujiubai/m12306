@@ -11,13 +11,10 @@ import com.mujiubai.train.common.resp.PageResp;
 import com.mujiubai.train.common.util.SnowUtil;
 import com.mujiubai.train.business.domain.Station;
 import com.mujiubai.train.business.domain.StationExample;
-import com.mujiubai.train.business.domain.Train;
-import com.mujiubai.train.business.domain.TrainExample;
 import com.mujiubai.train.business.mapper.StationMapper;
 import com.mujiubai.train.business.req.StationQueryReq;
 import com.mujiubai.train.business.req.StationSaveReq;
 import com.mujiubai.train.business.resp.StationQueryResp;
-import com.mujiubai.train.business.resp.TrainQueryResp;
 
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
@@ -67,7 +64,7 @@ public class StationService {
     public PageResp<StationQueryResp> queryList(StationQueryReq req) {
         StationExample stationExample = new StationExample();
         stationExample.setOrderByClause("id desc");
-        StationExample.Criteria criteria = stationExample.createCriteria();
+        // StationExample.Criteria criteria = stationExample.createCriteria();
 
         LOG.info("查询页码：{}", req.getPage());
         LOG.info("每页条数：{}", req.getSize());

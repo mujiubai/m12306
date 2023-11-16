@@ -9,8 +9,6 @@ import com.mujiubai.train.common.execption.BussinessExecption;
 import com.mujiubai.train.common.execption.BussinessExecptionEnum;
 import com.mujiubai.train.common.resp.PageResp;
 import com.mujiubai.train.common.util.SnowUtil;
-import com.mujiubai.train.business.domain.TrainCarriage;
-import com.mujiubai.train.business.domain.TrainCarriageExample;
 import com.mujiubai.train.business.domain.TrainStation;
 import com.mujiubai.train.business.domain.TrainStationExample;
 import com.mujiubai.train.business.mapper.TrainStationMapper;
