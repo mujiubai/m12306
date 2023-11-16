@@ -10,8 +10,8 @@ import com.mujiubai.train.common.util.SnowUtil;
 import com.mujiubai.train.business.domain.ConfirmOrder;
 import com.mujiubai.train.business.domain.ConfirmOrderExample;
 import com.mujiubai.train.business.mapper.ConfirmOrderMapper;
+import com.mujiubai.train.business.req.ConfirmOrderDoReq;
 import com.mujiubai.train.business.req.ConfirmOrderQueryReq;
-import com.mujiubai.train.business.req.ConfirmOrderSaveReq;
 import com.mujiubai.train.business.resp.ConfirmOrderQueryResp;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public class ConfirmOrderService {
     @Resource
     private ConfirmOrderMapper confirmOrderMapper;
 
-    public void save(ConfirmOrderSaveReq req) {
+    public void save(ConfirmOrderDoReq req) {
         DateTime now = DateTime.now();
         ConfirmOrder confirmOrder = BeanUtil.copyProperties(req, ConfirmOrder.class);
         if (ObjectUtil.isNull(confirmOrder.getId())) {
@@ -66,5 +66,9 @@ public class ConfirmOrderService {
 
     public void delete(Long id) {
         confirmOrderMapper.deleteByPrimaryKey(id);
+    }
+
+    public void doConfirm(ConfirmOrderDoReq req) {
+
     }
 }

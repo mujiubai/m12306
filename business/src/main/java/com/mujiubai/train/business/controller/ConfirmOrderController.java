@@ -1,4 +1,4 @@
-package com.mujiubai.train.business.controller.admin;
+package com.mujiubai.train.business.controller;
 
 import com.mujiubai.train.common.resp.CommonResp;
 import com.mujiubai.train.common.resp.PageResp;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/admin/confirm-order")
-public class ConfirmOrderAdminController {
+@RequestMapping("/confirm-order")
+public class ConfirmOrderController {
     @Resource
     private ConfirmOrderService confirmOrderService;
 
@@ -32,6 +32,12 @@ public class ConfirmOrderAdminController {
     @DeleteMapping("/delete/{id}")
     public CommonResp<Object> delete(@PathVariable Long id) {
         confirmOrderService.delete(id);
+        return new CommonResp<>();
+    }
+
+    @PostMapping("/do")
+    public CommonResp<Object> doConfirm(@Valid @RequestBody ConfirmOrderDoReq req) {
+        confirmOrderService.doConfirm(req);
         return new CommonResp<>();
     }
 }
