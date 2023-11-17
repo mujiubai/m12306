@@ -167,13 +167,49 @@ public class ConfirmOrderService {
             LOG.info("从车厢{}中挑选座位", carriage.getIndex());
             var seatList = dailyTrainSeatService.selectBySeat(date, trainCode, carriage.getIndex());
             LOG.info("在车厢{}查出{}个满足条件的座位", carriage.getIndex(), seatList.size());
-            for (var seat : seatList) {
-                boolean sellSuccess = isSeatSell(seat, startIndex, endIndex);
-                if (sellSuccess) {
-                    LOG.info("选座成功");
-                    return;
+            for (int i = 0; i < seatList.size(); ++i) {
+                if (column == null) {
+                    LOG.info("用户未选座");
+                } else {
+                    if (!column.equals(seatList.get(i).getCol())) {
+                        LOG.info("当前座位列：{}，目标座位列：{}，跳过当前座位", seatList.get(i).getCol(), column);
+                        continue;
+                    }
+                }
+                boolean sellSuccess = isSeatSell(seatList.get(i), startIndex, endIndex);
+                if (!sellSuccess) {
+                    continue;
                 }
 
+                // 判断是否存在偏移值，存在则一次直接选完
+                if (offsetList != null) {
+                    boolean isAllRqSuccess = true;
+                    for (int j = 1; j < offsetList.size(); ++j) {
+                        int nextIdx = i + offsetList.get(j);
+                        // 不能超出当前车厢
+                        if (nextIdx >= seatList.size()) {
+                            LOG.info("座位{}不可选，偏移后的位置超出当前车厢", nextIdx);
+                            isAllRqSuccess = false;
+                            break;
+                        }
+                        if (isSeatSell(seatList.get(nextIdx), startIndex, endIndex)) {
+                            LOG.info("座位{}被选中", nextIdx + 1);
+                        } else {
+                            LOG.info("座位{}未被选中", nextIdx + 1);
+                            isAllRqSuccess = false;
+                            break;
+                        }
+                    }
+                    if (!isAllRqSuccess) {
+                        break;
+                    } else {
+                        LOG.info("多个作为均已选座成功");
+                        return;// 均已找到则退出当前函数
+                    }
+                } else {
+                    LOG.info("单个座位选座成功");
+                    return;
+                }
             }
         }
     }
