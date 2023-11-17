@@ -134,6 +134,8 @@ public class DailyTrainSeatService {
 
     public List<DailyTrainSeat> selectBySeat(Date date, String trainCode, int carriageIndex) {
         DailyTrainSeatExample dailyTrainSeatExample = new DailyTrainSeatExample();
+        dailyTrainSeatExample
+                .setOrderByClause("carriage_seat_index asc");
         dailyTrainSeatExample.createCriteria()
                 .andDateEqualTo(date)
                 .andTrainCodeEqualTo(trainCode)
