@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -16,6 +17,7 @@ import com.mujiubai.train.business.domain.ConfirmOrder;
 import com.mujiubai.train.business.domain.ConfirmOrderExample;
 import com.mujiubai.train.business.domain.DailyTrainTicket;
 import com.mujiubai.train.business.enums.ConfirmOrderStatusEnum;
+import com.mujiubai.train.business.enums.SeatColEnum;
 import com.mujiubai.train.business.enums.SeatTypeEnum;
 import com.mujiubai.train.business.mapper.ConfirmOrderMapper;
 import com.mujiubai.train.business.req.ConfirmOrderDoReq;
@@ -26,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -104,8 +107,38 @@ public class ConfirmOrderService {
                 req.getEnd());
         LOG.info("查询余票：{}", dailyTrainTicket);
 
-        //预减余票，并判断是否足够
+        // 预减余票，并判断是否足够
         ticketReduce(req, dailyTrainTicket);
+
+        // 判断是否选座，若选座则生成所有座位相对于第一个座位的偏移值数组
+        if (StrUtil.isNotBlank(req.getTickets().get(0).getSeat())) {
+            LOG.info("用户设置选座");
+            List<SeatColEnum> seatColEnums = SeatColEnum.getColsByType(req.getTickets().get(0).getSeatTypeCode());
+            LOG.info("本次选座的列：{}", seatColEnums);
+            List<String> refSeatList = new ArrayList<>();
+            for (int i = 1; i <= 2; ++i) {
+                for (var seat : seatColEnums) {
+                    refSeatList.add(seat.getCode() + i);
+                }
+            }
+            LOG.info("生成的参考座位：{}", refSeatList);
+            List<Integer> offsetList = new ArrayList<>();
+            int refPointer = 0, seatPointer = 0;
+            while (refPointer < refSeatList.size() && seatPointer < req.getTickets().size()) {
+                if (req.getTickets().get(seatPointer).getSeat().equals(refSeatList.get(refPointer))) {
+                    offsetList.add(refPointer);
+                    ++seatPointer;
+                }
+                ++refPointer;
+            }
+            LOG.info("各座位绝对偏移值：{}", offsetList);
+            for (int i = offsetList.size() - 1; i >= 0; --i) {
+                offsetList.set(i, offsetList.get(i) - offsetList.get(0));
+            }
+            LOG.info("各座位相对偏移值：{}", offsetList);
+        } else {
+            LOG.info("用户未设置选座");
+        }
 
     }
 
