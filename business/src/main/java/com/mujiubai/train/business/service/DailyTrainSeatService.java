@@ -11,6 +11,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mujiubai.train.common.resp.PageResp;
 import com.mujiubai.train.common.util.SnowUtil;
+import com.mujiubai.train.business.domain.DailyTrainCarriage;
+import com.mujiubai.train.business.domain.DailyTrainCarriageExample;
 import com.mujiubai.train.business.domain.DailyTrainSeat;
 import com.mujiubai.train.business.domain.DailyTrainSeatExample;
 import com.mujiubai.train.business.domain.TrainSeat;
@@ -128,5 +130,14 @@ public class DailyTrainSeatService {
             return -1;
         }
         return (int) l;
+    }
+
+    public List<DailyTrainSeat> selectBySeat(Date date, String trainCode, int carriageIndex) {
+        DailyTrainSeatExample dailyTrainSeatExample = new DailyTrainSeatExample();
+        dailyTrainSeatExample.createCriteria()
+                .andDateEqualTo(date)
+                .andTrainCodeEqualTo(trainCode)
+                .andCarriageIndexEqualTo(carriageIndex);
+        return dailyTrainSeatMapper.selectByExample(dailyTrainSeatExample);
     }
 }

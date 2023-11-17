@@ -33,7 +33,7 @@ public class DailyTrainCarriageService {
     @Resource
     private DailyTrainCarriageMapper dailyTrainCarriageMapper;
 
-    @Resource 
+    @Resource
     private TrainCarriageService trainCarriageService;
 
     public void save(DailyTrainCarriageSaveReq req) {
@@ -116,5 +116,14 @@ public class DailyTrainCarriageService {
             dailyTrainCarriageMapper.insert(dailyTrainCarriage);
         }
         LOG.info("生成日期【{}】车次【{}】的车厢信息结束", DateUtil.formatDate(date), trainCode);
+    }
+
+    public List<DailyTrainCarriage> selectByCarriage(Date date, String trainCode, String seatType) {
+        DailyTrainCarriageExample dailyTrainCarriageExample = new DailyTrainCarriageExample();
+        dailyTrainCarriageExample.createCriteria()
+                .andDateEqualTo(date)
+                .andTrainCodeEqualTo(trainCode)
+                .andSeatTypeEqualTo(seatType);
+        return dailyTrainCarriageMapper.selectByExample(dailyTrainCarriageExample);
     }
 }

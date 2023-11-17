@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -41,6 +42,12 @@ public class ConfirmOrderService {
 
     @Resource
     private DailyTrainTicketService dailyTrainTicketService;
+
+    @Resource
+    private DailyTrainSeatService dailyTrainSeatService;
+
+    @Resource
+    private DailyTrainCarriageService dailyTrainCarriageService;
 
     public void save(ConfirmOrderDoReq req) {
         DateTime now = DateTime.now();
@@ -136,10 +143,28 @@ public class ConfirmOrderService {
                 offsetList.set(i, offsetList.get(i) - offsetList.get(0));
             }
             LOG.info("各座位相对偏移值：{}", offsetList);
+
+            getSeat(req.getDate(), req.getTrainCode(), req.getTickets().get(0).getSeatTypeCode(),
+                    req.getTickets().get(0).getSeat().split("")[0], offsetList);
         } else {
             LOG.info("用户未设置选座");
+            for (var ticketRq : req.getTickets()) {
+                getSeat(req.getDate(), req.getTrainCode(), ticketRq.getSeatTypeCode(),
+                        null, null);
+            }
         }
 
+    }
+
+    private void getSeat(Date date, String trainCode, String seatType, String column, List<Integer> offsetList) {
+        var carriageList = dailyTrainCarriageService.selectByCarriage(date, trainCode, seatType);
+        LOG.info("共查出{}个满足条件的车厢", carriageList.size());
+        // 一个车厢一个车厢查找座位
+        for (var carriage : carriageList) {
+            LOG.info("从车厢{}中挑选座位", carriage.getIndex());
+            var seatList = dailyTrainSeatService.selectBySeat(date, trainCode, carriage.getIndex());
+            LOG.info("在车厢{}查出{}个满足条件的座位", carriage.getIndex(), seatList.size());
+        }
     }
 
     private void ticketReduce(ConfirmOrderDoReq req, DailyTrainTicket dailyTrainTicket) {
