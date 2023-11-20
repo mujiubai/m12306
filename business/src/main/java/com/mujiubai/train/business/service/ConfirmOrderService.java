@@ -50,6 +50,9 @@ public class ConfirmOrderService {
     @Resource
     private DailyTrainCarriageService dailyTrainCarriageService;
 
+    @Resource
+    private AfterConfirmOrderService afterConfirmOrderService;
+
     public void save(ConfirmOrderDoReq req) {
         DateTime now = DateTime.now();
         ConfirmOrder confirmOrder = BeanUtil.copyProperties(req, ConfirmOrder.class);
@@ -158,6 +161,13 @@ public class ConfirmOrderService {
         }
 
         LOG.info("最终购票结果为：{}", finalSeatList);
+
+        //完成后续事情：
+            // 数据库中保存售票信息
+            // 更新余票信息
+            // 增加购票记录
+            // 确认订单成功
+        afterConfirmOrderService.afterDoConfirm(dailyTrainTicket,finalSeatList);
     }
 
     private void getSeat(List<DailyTrainSeat> finalSeatList, Date date, String trainCode, String seatType,
