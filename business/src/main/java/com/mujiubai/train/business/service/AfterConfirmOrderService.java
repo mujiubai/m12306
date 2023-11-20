@@ -11,6 +11,8 @@ import com.github.pagehelper.PageInfo;
 import com.mujiubai.train.common.context.LoginMemberContext;
 import com.mujiubai.train.common.execption.BussinessExecption;
 import com.mujiubai.train.common.execption.BussinessExecptionEnum;
+import com.mujiubai.train.common.req.MemberTicketReq;
+import com.mujiubai.train.common.resp.CommonResp;
 import com.mujiubai.train.common.resp.PageResp;
 import com.mujiubai.train.common.util.SnowUtil;
 import com.mujiubai.train.business.domain.ConfirmOrder;
@@ -22,11 +24,13 @@ import com.mujiubai.train.business.domain.DailyTrainTicket;
 import com.mujiubai.train.business.enums.ConfirmOrderStatusEnum;
 import com.mujiubai.train.business.enums.SeatColEnum;
 import com.mujiubai.train.business.enums.SeatTypeEnum;
+import com.mujiubai.train.business.feign.MemberFeign;
 import com.mujiubai.train.business.mapper.ConfirmOrderMapper;
 import com.mujiubai.train.business.mapper.DailyTrainSeatMapper;
 import com.mujiubai.train.business.mapper.cust.DailyTrainTicketMapperCust;
 import com.mujiubai.train.business.req.ConfirmOrderDoReq;
 import com.mujiubai.train.business.req.ConfirmOrderQueryReq;
+import com.mujiubai.train.business.req.ConfirmOrderTicketReq;
 import com.mujiubai.train.business.resp.ConfirmOrderQueryResp;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
@@ -61,6 +65,9 @@ public class AfterConfirmOrderService {
     @Resource
     private DailyTrainTicketMapperCust dailyTrainTicketMapperCust;
 
+    @Resource
+    private MemberFeign memberFeign;
+
     /***
      * 完成后续事情：
      * 数据库中保存售票信息
@@ -71,8 +78,10 @@ public class AfterConfirmOrderService {
      * @param finalSeatList
      */
     @Transactional
-    public void afterDoConfirm(DailyTrainTicket dailyTrainTicket, List<DailyTrainSeat> finalSeatList) {
-        for (DailyTrainSeat dailyTrainSeat : finalSeatList) {
+    public void afterDoConfirm(DailyTrainTicket dailyTrainTicket, List<DailyTrainSeat> finalSeatList,
+            List<ConfirmOrderTicketReq> tickets, ConfirmOrder confirmOrder) {
+        for (int j = 0; j < finalSeatList.size(); ++j) {
+            var dailyTrainSeat = finalSeatList.get(j);
             DailyTrainSeat seatUpdate = new DailyTrainSeat();
             seatUpdate.setUpdateTime(new Date());
             seatUpdate.setSell(dailyTrainSeat.getSell());
@@ -106,6 +115,24 @@ public class AfterConfirmOrderService {
             LOG.info("影响到达站区间：" + minEndIndex + "-" + maxEndIndex);
             dailyTrainTicketMapperCust.updateCountBySell(dailyTrainSeat.getDate(), dailyTrainSeat.getTrainCode(),
                     dailyTrainSeat.getSeatType(), minStartIndex, maxStartIndex, minEndIndex, maxEndIndex);
+
+            // 调用会员服务接口，为会员增加一张车票
+            MemberTicketReq memberTicketReq = new MemberTicketReq();
+            memberTicketReq.setMemberId(confirmOrder.getMemberId());
+            memberTicketReq.setPassengerId(tickets.get(j).getPassengerId());
+            memberTicketReq.setPassengerName(tickets.get(j).getPassengerName());
+            memberTicketReq.setTrainDate(dailyTrainTicket.getDate());
+            memberTicketReq.setTrainCode(dailyTrainTicket.getTrainCode());
+            memberTicketReq.setCarriageIndex(dailyTrainSeat.getCarriageIndex());
+            memberTicketReq.setSeatRow(dailyTrainSeat.getRow());
+            memberTicketReq.setSeatCol(dailyTrainSeat.getCol());
+            memberTicketReq.setStartStation(dailyTrainTicket.getStart());
+            memberTicketReq.setStartTime(dailyTrainTicket.getStartTime());
+            memberTicketReq.setEndStation(dailyTrainTicket.getEnd());
+            memberTicketReq.setEndTime(dailyTrainTicket.getEndTime());
+            memberTicketReq.setSeatType(dailyTrainSeat.getSeatType());
+            CommonResp<Object> commonResp = memberFeign.save(memberTicketReq);
+            LOG.info("调用member接口，返回：{}", commonResp);
 
         }
 

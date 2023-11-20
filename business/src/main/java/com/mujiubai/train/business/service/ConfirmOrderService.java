@@ -162,12 +162,12 @@ public class ConfirmOrderService {
 
         LOG.info("最终购票结果为：{}", finalSeatList);
 
-        //完成后续事情：
-            // 数据库中保存售票信息
-            // 更新余票信息
-            // 增加购票记录
-            // 确认订单成功
-        afterConfirmOrderService.afterDoConfirm(dailyTrainTicket,finalSeatList);
+        // 完成后续事情：
+        // 数据库中保存售票信息
+        // 更新余票信息
+        // 增加购票记录
+        // 确认订单成功
+        afterConfirmOrderService.afterDoConfirm(dailyTrainTicket, finalSeatList, req.getTickets(), confirmOrder);
     }
 
     private void getSeat(List<DailyTrainSeat> finalSeatList, Date date, String trainCode, String seatType,
